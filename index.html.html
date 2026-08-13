@@ -1,0 +1,2574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="TRESS - Professional CODM Loadouts, Perks, Sensitivity & HUD">
+    <meta name="theme-color" content="#12091d">
+    <title>TRESS | Professional CODM Settings</title>
+   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        :root {
+            --primary: #b84cff;
+            --primary-dark: #7628a8;
+            --secondary: #1b0d29;
+            --accent: #d985ff;
+            --bg: #10091a;
+            --card-bg: #160c21;
+            --surface: #21112e;
+            --text: #ffffff;
+            --text-muted: #9d8aaa;
+            --border: #43205e;
+            --success: #00d084;
+            --info: #b84cff;
+            --warning: #d985ff;
+            --glass: rgba(190, 80, 255, 0.04);
+        }
+        [data-theme="light"] {
+            --bg: #f5f5f5;
+            --card-bg: #ffffff;
+            --surface: #f0f0f0;
+            --text: #1a1a1a;
+            --text-muted: #666666;
+            --border: #e0e0e0;
+            --glass: rgba(0, 0, 0, 0.03);
+            --secondary: #e8e8e8;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        body.performance-mode .particles,
+        body.performance-mode .scanlines,
+        body.performance-mode .noise,
+        body.performance-mode .tech-lines,
+        body.performance-mode .orb,
+        body.performance-mode .corner-accent,
+        body.performance-mode .bg-grid,
+        body.performance-mode .bg-glow {
+            display: none !important;
+        }
+        body.performance-mode .weapon-card,
+        body.performance-mode .settings-card,
+        body.performance-mode .perk-card,
+        body.performance-mode .guide-card,
+        body.performance-mode .fov-card {
+            transform: none !important;
+            box-shadow: none !important;
+        }
+        body.performance-mode .weapon-card:hover,
+        body.performance-mode .settings-card:hover,
+        body.performance-mode .perk-card:hover,
+        body.performance-mode .fov-card:hover {
+            border-color: var(--primary);
+        }
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(184, 76, 255, 0.055) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(184, 76, 255, 0.055) 1px, transparent 1px);
+            background-size: 55px 55px;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.75;
+            animation: gridShift 20s linear infinite;
+        }
+        @keyframes gridShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 55px 55px; }
+        }
+        .bg-glow {
+            position: fixed;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle at 50% 50%, rgba(184, 76, 255, 0.09) 0%, transparent 60%);
+            z-index: -3;
+            animation: pulse 8s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -5;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            top: 10%;
+            left: -100px;
+            animation: orbFloat 25s ease-in-out infinite;
+        }
+        .orb-2 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent);
+            bottom: 20%;
+            right: -50px;
+            animation: orbFloat 30s ease-in-out infinite reverse;
+        }
+        .orb-3 {
+            width: 200px;
+            height: 200px;
+            background: var(--primary-dark);
+            top: 60%;
+            left: 30%;
+            animation: orbFloat 35s ease-in-out infinite;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -20px); }
+            50% { transform: translate(-20px, 20px); }
+            75% { transform: translate(20px, 20px); }
+        }
+        .top-nav {
+            position: sticky;
+            top: 0;
+            background: rgba(16, 9, 26, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 0.75rem 1rem;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .brand-icon {
+            width: 58px;
+            height: 58px;
+            background:
+                radial-gradient(circle at 50% 42%, rgba(205, 112, 255, 0.24), rgba(122, 36, 176, 0.10) 55%, transparent 78%),
+                rgba(184, 76, 255, 0.025);
+            border: 1px solid rgba(217, 133, 255, 0.26);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            font-size: 1.5rem;
+            box-shadow: 0 0 28px rgba(184, 76, 255, 0.20), inset 0 0 22px rgba(193, 76, 255, 0.08);
+            overflow: hidden;
+        }
+        .brand-icon::before {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border-radius: 12px;
+            background: radial-gradient(circle, rgba(184, 76, 255, 0.11), transparent 68%);
+            pointer-events: none;
+        }
+        .brand-logo-img {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            z-index: 1;
+            mix-blend-mode: darken;
+            filter: drop-shadow(0 0 7px rgba(184, 76, 255, 0.34));
+            transform: scale(1.08);
+        }
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        .control-btn:hover {
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        .control-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .social-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        .social-btn.discord:hover { background: #5865F2; border-color: #5865F2; color: white; }
+        .social-btn.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+            border-color: transparent;
+            color: white;
+        }
+        .social-btn.tiktok:hover { background: #000000; border-color: #ff0050; color: #ff0050; }
+        .social-btn.gift:hover { background: #0070ba; border-color: #0070ba; color: white; }
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .qr-modal.active {
+            display: flex;
+        }
+        .qr-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            position: relative;
+            animation: modalPop 0.3s ease;
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .qr-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .qr-close:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .qr-image {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 12px;
+            margin: 1rem 0;
+            border: 2px solid var(--border);
+        }
+        .qr-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .qr-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .header {
+            text-align: center;
+            padding: 5rem 1rem 2.5rem;
+            position: relative;
+        }
+        .header h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #c86aff 48%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+        .header p {
+            color: #9d8aaa;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin: 2.5rem auto 0;
+            flex-wrap: wrap;
+            max-width: 440px;
+            padding: 1rem;
+            background: rgba(22, 12, 33, 0.72);
+            border: 1px solid #4a2264;
+            border-radius: 18px;
+            box-shadow: 0 20px 55px rgba(184, 76, 255, 0.08), inset 0 0 35px rgba(184, 76, 255, 0.035);
+            backdrop-filter: blur(14px);
+        }
+        .stat {
+            text-align: center;
+            padding: 0.75rem 1rem;
+            background: rgba(28, 14, 42, 0.78);
+            border: 1px solid #3b1b51;
+            border-radius: 12px;
+            min-width: 100px;
+            flex: 1;
+            transition: all 0.3s;
+        }
+        .stat:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            text-align: center;
+            margin: 4rem 0 2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+        }
+        .section-title i {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+        .section-title::before,
+        .section-title::after {
+            content: '';
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary));
+        }
+        .section-title::after {
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+        .controls {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem 2rem;
+        }
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto 1.5rem;
+        }
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(184, 76, 255, 0.1);
+        }
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .filter-btn i {
+            font-size: 0.9rem;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(184, 76, 255, 0.3);
+        }
+        .weapons-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+        .weapons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .weapon-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        .weapon-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.1);
+        }
+        .weapon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .weapon-card:hover::before {
+            opacity: 1;
+        }
+        .card-header {
+            position: relative;
+            height: 180px;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--card-bg) 100%);
+            overflow: hidden;
+        }
+        .weapon-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        .weapon-card:hover .weapon-img {
+            transform: scale(1.05);
+        }
+        .badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .badge-new {
+            background: var(--primary);
+            color: white;
+            animation: pulse-badge 2s infinite;
+        }
+        .badge-season {
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        @keyframes pulse-badge {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(184, 76, 255, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(184, 76, 255, 0); }
+        }
+        .card-actions-top {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+        .action-btn:hover, .action-btn.active {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+        .card-body {
+            padding: 1.25rem;
+        }
+        .weapon-type {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .weapon-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .weapon-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        .settings-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem;
+        }
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .settings-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .settings-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.1);
+        }
+        .settings-card.featured::before {
+            content: 'PRO';
+            position: absolute;
+            top: 1rem;
+            left: -2.5rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 3rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            transform: rotate(-45deg);
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .settings-preview {
+            height: 200px;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--card-bg) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid var(--border);
+        }
+        .settings-preview::after {
+            content: attr(data-label);
+            position: absolute;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.3;
+            font-weight: 700;
+        }
+        .settings-content {
+            padding: 1.5rem;
+        }
+        .settings-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .settings-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.3);
+        }
+        .settings-icon i {
+            color: white;
+            font-size: 1.5rem;
+        }
+        .settings-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .settings-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        .big-code-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px dashed var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+        }
+        [data-theme="light"] .big-code-box {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        .big-code-box:hover {
+            border-color: var(--primary);
+            background: rgba(184, 76, 255, 0.05);
+        }
+        .code-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+        .big-code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: 4px;
+            word-break: break-all;
+        }
+        [data-theme="light"] .big-code {
+            color: var(--primary-dark);
+        }
+        .settings-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn i {
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(184, 76, 255, 0.4);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(184, 76, 255, 0.05);
+        }
+        .settings-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            justify-content: center;
+        }
+        .feature-tag {
+            padding: 0.4rem 1rem;
+            background: var(--surface);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .feature-tag i {
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+        /* Basic Settings */
+        .basic-settings-wrap {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin: 0 auto 1.5rem;
+        }
+        .basic-settings-card {
+            width: min(100%, 620px);
+            min-height: 64px;
+            padding: 1rem 1.15rem;
+            background: linear-gradient(135deg, rgba(184, 76, 255, 0.10), rgba(33, 17, 46, 0.92));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        .basic-settings-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.16);
+        }
+        .basic-settings-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .basic-settings-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            box-shadow: 0 5px 16px rgba(184, 76, 255, 0.25);
+        }
+        .basic-settings-name {
+            display: block;
+            font-size: 1rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-shadow: 0 0 14px rgba(217, 133, 255, 0.16);
+        }
+        .basic-settings-hint {
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            margin-top: 1px;
+        }
+        .basic-settings-arrow {
+            color: var(--text-muted);
+            transition: transform 0.25s ease, color 0.25s ease;
+        }
+        .basic-settings-card:hover .basic-settings-arrow {
+            color: var(--primary);
+            transform: translateX(3px);
+        }
+
+        .basic-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 6000;
+            padding: 1rem;
+            background: rgba(7, 3, 12, 0.86);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            align-items: center;
+            justify-content: center;
+        }
+        .basic-modal.active {
+            display: flex;
+            animation: basicFadeIn 0.2s ease;
+        }
+        @keyframes basicFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .basic-modal-content {
+            width: min(980px, 100%);
+            max-height: 92vh;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(22, 12, 33, 0.98), rgba(16, 9, 26, 0.98));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.55), 0 0 45px rgba(184, 76, 255, 0.12);
+            animation: basicModalPop 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes basicModalPop {
+            from { transform: translateY(12px) scale(0.985); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .basic-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.15rem;
+            border-bottom: 1px solid var(--border);
+            flex: 0 0 auto;
+        }
+        .basic-modal-title {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .basic-modal-title i { color: var(--accent); }
+        .basic-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        .basic-modal-close:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: rotate(4deg);
+        }
+        .basic-slides {
+            position: relative;
+            padding: 0.9rem 3.7rem 1rem;
+            overflow: hidden;
+            touch-action: pan-y;
+            user-select: none;
+        }
+        .basic-slides-track {
+            display: flex;
+            width: 100%;
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.34s cubic-bezier(.22,.61,.36,1);
+            will-change: transform;
+        }
+        .basic-slide {
+            position: relative;
+            flex: 0 0 100%;
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.16);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 0.6rem;
+            overflow: hidden;
+        }
+        .basic-slide-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-bottom: 0.55rem;
+            color: var(--accent);
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .basic-slide img {
+            width: 100%;
+            height: min(68vh, 720px);
+            display: block;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 9px;
+            background: #0c0711;
+            -webkit-user-drag: none;
+            user-select: none;
+        }
+        .basic-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1px solid rgba(217, 133, 255, 0.28);
+            background: rgba(22, 12, 33, 0.88);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 0 18px rgba(184, 76, 255, 0.14);
+            transition: all 0.2s ease;
+        }
+        .basic-nav-btn:hover {
+            border-color: var(--primary);
+            background: rgba(184, 76, 255, 0.15);
+            color: #fff;
+            box-shadow: 0 0 24px rgba(184, 76, 255, 0.28);
+        }
+        .basic-nav-btn.prev { left: 0.85rem; }
+        .basic-nav-btn.next { right: 0.85rem; }
+        .basic-nav-btn:disabled {
+            opacity: 0.25;
+            cursor: default;
+            pointer-events: none;
+        }
+        .basic-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.05rem 0 0.2rem;
+        }
+        .basic-dot {
+            width: 7px;
+            height: 7px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.18);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .basic-dot.active {
+            width: 22px;
+            border-radius: 999px;
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(184, 76, 255, 0.45);
+        }
+        .basic-slide-counter {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            margin-top: 0.45rem;
+        }
+        @media (max-width: 700px) {
+            .brand-icon { width: 54px; height: 54px; border-radius: 15px; }
+            .brand-logo-img { width: 45px; height: 45px; }
+            .basic-modal { padding: 0.55rem; }
+            .basic-modal-content { max-height: 96vh; border-radius: 16px; }
+            .basic-modal-header { padding: 0.8rem 0.9rem; }
+            .basic-slides { padding: 0.65rem 0.45rem 0.8rem; }
+            .basic-slide { border-radius: 12px; padding: 0.45rem; }
+            .basic-slide img { height: calc(100vh - 170px); max-height: 760px; }
+            .basic-nav-btn { width: 36px; height: 36px; background: rgba(22, 12, 33, 0.74); }
+            .basic-nav-btn.prev { left: 0.55rem; }
+            .basic-nav-btn.next { right: 0.55rem; }
+        }
+
+        .perks-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem;
+        }
+        .perks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        .perk-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+        .perk-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.1);
+        }
+        .perk-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .perk-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: white;
+        }
+        .perk-red .perk-icon { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); box-shadow: 0 8px 20px rgba(184, 76, 255, 0.28); }
+        .perk-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .perk-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .perk-list {
+            list-style: none;
+        }
+        .perk-item {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: var(--surface);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .perk-item:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+        }
+        .perk-bullet {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        .guide-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem;
+        }
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .guide-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .guide-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.1);
+        }
+        .guide-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        .guide-card:hover::before {
+            transform: scaleX(1);
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 20px rgba(184, 76, 255, 0.3);
+        }
+        .guide-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .guide-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        .toast-icon {
+            color: var(--success);
+            font-size: 1.25rem;
+        }
+        .footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+        .footer-brand {
+            font-size: 1.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .footer p {
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 768px) {
+            .brand-icon {
+                width: 54px;
+                height: 54px;
+                border-radius: 15px;
+            }
+            .brand-logo-img {
+                width: 45px;
+                height: 45px;
+            }
+            .basic-settings-wrap {
+                margin-bottom: 1.25rem;
+            }
+            .basic-settings-card {
+                width: 100%;
+                min-height: 68px;
+                padding: 1rem;
+                border-radius: 15px;
+            }
+            .basic-settings-left {
+                gap: 0.8rem;
+            }
+            .basic-settings-icon {
+                width: 42px;
+                height: 42px;
+                flex: 0 0 42px;
+            }
+            .basic-settings-name {
+                font-size: 0.98rem;
+            }
+            .basic-settings-hint {
+                font-size: 0.7rem;
+            }
+            .basic-settings-arrow {
+                font-size: 1rem;
+                padding: 0.35rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .weapons-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .card-header {
+                height: 140px;
+            }
+            .weapon-name {
+                font-size: 1rem;
+            }
+            .weapon-desc {
+                display: none;
+            }
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            .big-code {
+                font-size: 1.25rem;
+            }
+            .brand span {
+                display: none;
+            }
+            .section-title {
+                font-size: 1.25rem;
+            }
+            .section-title::before,
+            .section-title::after {
+                width: 30px;
+            }
+            .nav-controls {
+                gap: 0.5rem;
+            }
+            .control-btn {
+                width: 36px;
+                height: 36px;
+            }
+            .social-links {
+                gap: 0.3rem;
+            }
+            .social-btn {
+                width: 36px;
+                height: 36px;
+            }
+            .fov-grid {
+                grid-template-columns: 1fr !important;
+            }
+            .fov-value {
+                font-size: 3rem !important;
+            }
+        }
+
+        /* Final responsive polish */
+        .header h1 {
+            position: relative;
+            display: inline-block;
+            isolation: isolate;
+            text-shadow: 0 0 22px rgba(184,76,255,.28);
+        }
+        .header h1::before,
+        .header h1::after {
+            content: 'TRESS';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            -webkit-text-fill-color: #b84cff;
+            background: none;
+            z-index: -1;
+        }
+        .header h1::before {
+            transform: translate(3px, 0);
+            clip-path: inset(18% 0 58% 0);
+            animation: tressGlitchA 3.6s steps(1,end) infinite;
+        }
+        .header h1::after {
+            transform: translate(-3px, 0);
+            clip-path: inset(62% 0 16% 0);
+            animation: tressGlitchB 4.2s steps(1,end) infinite;
+        }
+        @keyframes tressGlitchA {
+            0%, 86%, 100% { opacity: 0; }
+            87% { opacity: .7; }
+            88% { opacity: 0; }
+            89% { opacity: .55; }
+            90% { opacity: 0; }
+        }
+        @keyframes tressGlitchB {
+            0%, 78%, 100% { opacity: 0; }
+            79% { opacity: .55; }
+            80% { opacity: 0; }
+            81% { opacity: .7; }
+            82% { opacity: 0; }
+        }
+        .weapons-grid {
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.15rem;
+        }
+        .weapon-card {
+            min-width: 0;
+            overflow: hidden;
+        }
+        .card-header {
+            overflow: hidden;
+        }
+        .card-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .top-nav { padding: .65rem .75rem; }
+            .nav-container { gap: .55rem; }
+            .nav-controls { flex-wrap: nowrap; min-width: 0; }
+            .social-links { flex-shrink: 0; }
+            .header { padding: 3.9rem .75rem 1.35rem; }
+            .header h1 { font-size: clamp(2.35rem, 12vw, 3.35rem); letter-spacing: 3px; margin-bottom: .3rem; }
+            .header p { font-size: .68rem; letter-spacing: 1.2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+            .stats-bar { width: min(100%, 520px); margin-top: 1.25rem; padding: .65rem; gap: .45rem; border-radius: 15px; }
+            .stat { min-width: 0; padding: .55rem .45rem; border-radius: 10px; }
+            .stat-value { font-size: 1.35rem; }
+            .stat-label { font-size: .62rem; letter-spacing: .7px; }
+            #loadouts, .perks-section, .guide-section { padding-left: .75rem; padding-right: .75rem; }
+            .section-title { margin: 2.25rem 0 1.1rem; }
+            .controls { gap: .55rem; }
+            .search-box { width: 100%; }
+            .weapons-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
+            .card-header { height: 118px; }
+            .card-body { padding: .72rem; }
+            .weapon-type { font-size: .62rem; margin-bottom: .25rem; }
+            .weapon-name { font-size: .88rem; line-height: 1.2; }
+            .weapon-desc { display: none; }
+            .weapon-actions { gap: .35rem; }
+            .weapon-action { min-height: 34px; padding: .4rem .45rem; font-size: .68rem; }
+            .favorite-btn { width: 34px; height: 34px; }
+        }
+        @media (max-width: 380px) {
+            .social-btn { width: 33px; height: 33px; }
+            .control-btn { width: 33px; height: 33px; }
+            .social-links { gap: .18rem; }
+            .brand-icon { width: 48px; height: 48px; }
+            .brand-logo-img { width: 41px; height: 41px; }
+            .weapons-grid { gap: .55rem; }
+            .card-header { height: 105px; }
+            .card-body { padding: .58rem; }
+            .weapon-name { font-size: .82rem; }
+            .weapon-action { font-size: .62rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .header h1, .header h1::before, .header h1::after { animation: none !important; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+        ::selection {
+            background: var(--primary);
+            color: white;
+        }
+        .dev-message {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            z-index: 100;
+            pointer-events: none;
+            text-transform: uppercase;
+            opacity: 0.4;
+            white-space: nowrap;
+        }
+        .gun-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        .gun-modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            max-width: 520px;
+            width: 92%;
+            max-height: 88vh;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(184, 76, 255, 0.35);
+            position: relative;
+            animation: modalPop 0.35s ease;
+        }
+        .modal-header {
+            padding: 1rem 1.25rem;
+            background: rgba(184, 76, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+        .modal-img-container {
+            position: relative;
+        }
+        .modal-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 65vh;
+            object-fit: contain;
+        }
+        .attach-code {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            z-index: 10;
+            letter-spacing: 2px;
+            box-shadow: 0 2px 10px rgba(184, 76, 255, 0.3);
+        }
+        .attach-code-copy {
+            margin: 1rem auto;
+            display: block;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .attach-code-copy:hover {
+            background: var(--primary-dark);
+        }
+        @keyframes modalPop {
+            0% { transform: scale(0.88); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* FOV Section Styles */
+        .fov-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem;
+        }
+        .fov-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .fov-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .fov-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+        .fov-card:hover::before {
+            transform: scaleX(1);
+        }
+        .fov-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(184, 76, 255, 0.15);
+        }
+        .fov-card.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(184, 76, 255, 0.2), inset 0 0 30px rgba(184, 76, 255, 0.05);
+        }
+        .fov-card.active::before {
+            transform: scaleX(1);
+        }
+        .fov-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+            color: white;
+            box-shadow: 0 10px 30px rgba(184, 76, 255, 0.3);
+            position: relative;
+        }
+        .fov-icon::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 2px solid var(--primary);
+            opacity: 0.3;
+            animation: fovPulse 2s ease-in-out infinite;
+        }
+        @keyframes fovPulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 0; }
+        }
+        .fov-value {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--text) 0%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+        }
+        .fov-label {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+        .fov-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        .fov-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .fov-tag {
+            padding: 0.4rem 1rem;
+            background: var(--surface);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .fov-tag i {
+            font-size: 0.75rem;
+            color: var(--primary);
+        }
+        .fov-recommended {
+            position: absolute;
+            top: 1rem;
+            right: -2.5rem;
+            background: var(--accent);
+            color: #000;
+            padding: 0.25rem 3rem;
+            font-size: 0.7rem;
+            font-weight: 800;
+            transform: rotate(45deg);
+            z-index: 10;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="gun-modal" id="gunModal" onclick="if(event.target.id==='gunModal')closeGunModal()">
+        <div class="modal-content" onclick="event.stopImmediatePropagation()">
+            <div class="modal-header">
+                <span id="modalGunName">Gun with Attachments</span>
+                <button class="modal-close" onclick="closeGunModal()">&times;</button>
+            </div>
+            <div class="modal-img-container">
+                <img id="modalGunImg" class="modal-img" src="" alt="Attached Version">
+                <div id="modalAttachCode" class="attach-code"></div>
+            </div>
+            <button class="attach-code-copy" onclick="copyAttachCode()">Copy Attachment Code</button>
+        </div>
+    </div>
+    <div class="qr-modal" id="qrModal" onclick="closeQR(event)">
+        <div class="qr-content" onclick="event.stopPropagation()">
+            <button class="qr-close" onclick="closeQR()"><i class="fas fa-times"></i></button>
+            <div class="qr-title"><i class="fas fa-gift" style="color: var(--primary); margin-right: 0.5rem;"></i>my fav tyrant qr</div>
+            <div class="qr-text">Scan to send GCash gift</div>
+            <img src="not available" alt="GCash QR Code" class="qr-image" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 300 300%22><rect fill=%22%23f0f0f0%22 width=%22300%22 height=%22300%22/><text fill=%22%23999%22 x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2216%22>GCash QR</text></svg>'">
+            <div class="qr-text" style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--text-muted);">Thank you for your support!</div>
+        </div>
+    </div>
+    <div class="basic-modal" id="basicSettingsModal" onclick="if(event.target.id==='basicSettingsModal')closeBasicSettings()">
+        <div class="basic-modal-content" onclick="event.stopPropagation()">
+            <div class="basic-modal-header">
+                <div class="basic-modal-title"><i class="fas fa-sliders"></i> Basic Settings</div>
+                <button class="basic-modal-close" type="button" onclick="closeBasicSettings()" aria-label="Close"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="basic-slides" id="basicSlidesViewport">
+                <button class="basic-nav-btn prev" id="basicPrev" type="button" onclick="changeBasicSlide(-1)" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+                <div class="basic-slides-track" id="basicSlidesTrack">
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 1</div><img src="https://i.imgur.com/vuguQmh.png" alt="Basic Settings Slide 1" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/vuguQmh.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 2</div><img src="https://i.imgur.com/XzuGOZW.png" alt="Basic Settings Slide 2" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/XzuGOZW.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 3</div><img src="https://i.imgur.com/3KrPyLx.png" alt="Basic Settings Slide 3" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/3KrPyLx.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 4</div><img src="https://i.imgur.com/W3WVSuD.png" alt="Basic Settings Slide 4" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/W3WVSuD.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 5</div><img src="https://i.imgur.com/4XbFlTk.png" alt="Basic Settings Slide 5" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/4XbFlTk.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 6</div><img src="https://i.imgur.com/3jQsxYx.png" alt="Basic Settings Slide 6" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/3jQsxYx.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 7</div><img src="https://i.imgur.com/R06NbMr.png" alt="Basic Settings Slide 7" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/R06NbMr.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 8</div><img src="https://i.imgur.com/t9uGfKL.png" alt="Basic Settings Slide 8" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/t9uGfKL.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 9</div><img src="https://i.imgur.com/ka6gsaN.png" alt="Basic Settings Slide 9" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/ka6gsaN.jpg';"></div>
+                    <div class="basic-slide"><div class="basic-slide-label"><i class="fas fa-image"></i> Slide 10</div><img src="https://i.imgur.com/Z41YAXF.png" alt="Basic Settings Slide 10" loading="lazy" draggable="false" onerror="this.onerror=null;this.src='https://i.imgur.com/Z41YAXF.jpg';"></div>
+                </div>
+                <button class="basic-nav-btn next" id="basicNext" type="button" onclick="changeBasicSlide(1)" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+                <div class="basic-slide-counter" id="basicSlideCounter">Slide 1 of 10</div>
+            </div>
+            <div class="basic-dots" id="basicDots" aria-label="Basic settings slides">
+                <button class="basic-dot active" type="button" onclick="goToBasicSlide(0)" aria-label="Go to slide 1"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(1)" aria-label="Go to slide 2"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(2)" aria-label="Go to slide 3"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(3)" aria-label="Go to slide 4"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(4)" aria-label="Go to slide 5"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(5)" aria-label="Go to slide 6"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(6)" aria-label="Go to slide 7"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(7)" aria-label="Go to slide 8"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(8)" aria-label="Go to slide 9"></button>
+                <button class="basic-dot" type="button" onclick="goToBasicSlide(9)" aria-label="Go to slide 10"></button>
+            </div>
+        </div>
+    </div>
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="brand">
+                <div class="brand-icon">
+                    <img src="https://i.imgur.com/8CKs31Y.png" alt="TRESS Crown Logo" class="brand-logo-img" onerror="this.onerror=null;this.src='https://i.imgur.com/8CKs31Y.jpg';">
+                </div>
+                <span>TRESS</span>
+            </div>
+           
+            <div class="nav-controls">
+                <button class="control-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="control-btn" id="perfToggle" onclick="togglePerformance()" title="Performance Mode">
+                    <i class="fas fa-bolt"></i>
+                </button>
+                <div class="social-links">
+                    <a href="https://discord.gg/sxjPZPHsk" class="social-btn discord" target="_blank" title="Discord">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="https://www.instagram.com/torreskathh_" class="social-btn instagram" target="_blank" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/@codm.xztress?" class="social-btn tiktok" target="_blank" title="TikTok">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                    <button class="social-btn gift" onclick="openQR()" title="Support via GCash">
+                        <i class="fas fa-gift"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header class="header">
+        <h1>TRESS</h1>
+        <p>TRESSGOD ATTACHMENTS AND SETTINGS</p>
+       
+        <div class="stats-bar">
+            <div class="stat">
+                <i class="fas fa-crosshairs" style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--primary); display: block;"></i>
+                <div class="stat-value" id="totalGuns">0</div>
+                <div class="stat-label">Loadouts</div>
+            </div>
+            <div class="stat">
+                <i class="fas fa-star" style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--primary); display: block;"></i>
+                <div class="stat-value" id="favoritesCount">0</div>
+                <div class="stat-label">Favorites</div>
+            </div>
+            <div class="stat">
+                <i class="fas fa-sliders-h" style="font-size: 1.2rem; margin-bottom: 0.25rem; color: var(--primary); display: block;"></i>
+                <div class="stat-value">2</div>
+                <div class="stat-label">Settings</div>
+            </div>
+        </div>
+    </header>
+    <section id="loadouts">
+        <h2 class="section-title">
+            <i class="fas fa-shield-alt"></i>
+            Loadouts
+        </h2>
+       
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search weapons..." autocomplete="off">
+            </div>
+           
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="filterWeapons('all', this)">
+                    <i class="fas fa-layer-group"></i> All
+                </button>
+                <button class="filter-btn" onclick="filterWeapons('ar', this)">
+                    <i class="fas fa-rifle"></i> AR
+                </button>
+                <button class="filter-btn" onclick="filterWeapons('smg', this)">
+                    <i class="fas fa-wind"></i> SMG
+                </button>
+                <button class="filter-btn" onclick="filterWeapons('lmg', this)">
+                    <i class="fas fa-grip-vertical"></i> LMG
+                </button>
+                <button class="filter-btn" onclick="filterWeapons('marksman', this)">
+                    <i class="fas fa-crosshairs"></i> Marksman
+                </button>
+                <button class="filter-btn" onclick="filterWeapons('sniper', this)">
+                    <i class="fas fa-crosshairs"></i> Sniper
+                </button>
+            </div>
+        </div>
+        <div class="weapons-container">
+            <div class="weapons-grid" id="weaponsGrid">
+            </div>
+        </div>
+    </section>
+    <section id="perks">
+        <h2 class="section-title">
+            <i class="fas fa-bolt"></i>
+            Perks
+        </h2>
+       
+        <div class="perks-section">
+            <div class="perks-grid">
+                <div class="perk-card perk-red">
+                    <div class="perk-header">
+                        <div class="perk-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div>
+                            <div class="perk-title">Red Wildcard</div>
+                            <div class="perk-subtitle">4 Perks Combo</div>
+                        </div>
+                    </div>
+                    <ul class="perk-list">
+                        <li class="perk-item"><span class="perk-bullet"></span>Lightweight</li>
+                        <li class="perk-item"><span class="perk-bullet"></span>Gung-Ho</li>
+                        <li class="perk-item"><span class="perk-bullet"></span>Survival Training</li>
+                        <li class="perk-item"><span class="perk-bullet"></span>Restock</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="settings">
+        <h2 class="section-title">
+            <i class="fas fa-cog"></i>
+            Settings
+        </h2>
+       
+        <div class="settings-section">
+            <div class="basic-settings-wrap">
+                <button class="basic-settings-card" type="button" onclick="openBasicSettings()" aria-label="Open Basic Settings">
+                    <span class="basic-settings-left">
+                        <span class="basic-settings-icon"><i class="fas fa-sliders"></i></span>
+                        <span>
+                            <span class="basic-settings-name">Basic Settings</span>
+                            <span class="basic-settings-hint">Tap to view all basic settings</span>
+                        </span>
+                    </span>
+                    <i class="fas fa-chevron-right basic-settings-arrow"></i>
+                </button>
+            </div>
+            <div class="settings-grid">
+                <div class="settings-card featured">
+                    <div class="settings-preview" data-label="Sensitivity"></div>
+                    <div class="settings-content">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-crosshairs"></i>
+                            </div>
+                            <h3 class="settings-title">Sensitivity</h3>
+                            <p class="settings-subtitle">Multi-purpose settings for all modes</p>
+                        </div>
+                        <div class="big-code-box">
+                            <div class="code-label">Import Code</div>
+                            <div class="big-code" id="sensiCode">7666263096249513580</div>
+                        </div>
+                       
+                        <div class="settings-actions">
+                            <button class="btn btn-primary" onclick="copySetting('sensi')">
+                                <i class="fas fa-copy"></i> Copy Code
+                            </button>
+                            <button class="btn btn-secondary" onclick="shareSetting('Sensitivity')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                       
+                        <div class="settings-features">
+                            <span class="feature-tag"><i class="fas fa-camera"></i> Camera: Custom</span>
+                            <span class="feature-tag"><i class="fas fa-dot-circle"></i> ADS: Precision</span>
+                            <span class="feature-tag"><i class="fas fa-mobile-alt"></i> Gyro: Enabled</span>
+                            <span class="feature-tag"><i class="fas fa-fire"></i> Firing: Optimized</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-card">
+                    <div class="settings-preview" data-label="HUD Layout"></div>
+                    <div class="settings-content">
+                        <div class="settings-header">
+                            <div class="settings-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <h3 class="settings-title">HUD Layout</h3>
+                            <p class="settings-subtitle">3-finger claw setup</p>
+                        </div>
+                        <div class="big-code-box">
+                            <div class="code-label">Import Code</div>
+                            <div class="big-code" id="hudCode">7274145334361287067-7267209056666895248</div>
+                        </div>
+                       
+                        <div class="settings-actions">
+                            <button class="btn btn-primary" onclick="copySetting('hud')">
+                                <i class="fas fa-copy"></i> Copy Code
+                            </button>
+                            <button class="btn btn-secondary" onclick="shareSetting('HUD Layout')">
+                                <i class="fas fa-share-alt"></i> Share
+                            </button>
+                        </div>
+                       
+                        <div class="settings-features">
+                            <span class="feature-tag"><i class="fas fa-hand-paper"></i> 3-Finger</span>
+                            <span class="feature-tag"><i class="fas fa-arrow-left"></i> Left Fire</span>
+                            <span class="feature-tag"><i class="fas fa-arrow-right"></i> Right ADS</span>
+                            <span class="feature-tag"><i class="fas fa-eye"></i> Transparent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="fov">
+        <h2 class="section-title">
+            <i class="fas fa-expand"></i>
+            Field of View
+        </h2>
+       
+        <div class="fov-section">
+            <div class="fov-grid">
+                <div class="fov-card" onclick="selectFOV(this, 90)">
+                    <div class="fov-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="fov-value">90</div>
+                    <div class="fov-label">FOV RANGE</div>
+                    <p class="fov-desc">good vision = god accuracy</p>
+                    <div class="fov-tags">
+                        <span class="fov-tag"><i class="fas fa-balance-scale"></i> Balanced</span>
+                        <span class="fov-tag"><i class="fas fa-user"></i>good for aggressive player</span>
+                    </div>
+                </div>
+                <div class="fov-card active" onclick="selectFOV(this, 100)">
+                    <div class="fov-recommended">Recommended</div>
+                    <div class="fov-icon">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </div>
+                    <div class="fov-value">100</div>
+                    <div class="fov-label">FOV FPP</div>
+                    <p class="fov-desc">enough to see your enemies clearly</p>
+                    <div class="fov-tags">
+                        <span class="fov-tag"><i class="fas fa-trophy"></i> Competitive</span>
+                        <span class="fov-tag"><i class="fas fa-star"></i> Pro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="guide">
+        <h2 class="section-title">
+            <i class="fas fa-book"></i>
+            How To Use
+        </h2>
+       
+        <div class="guide-section">
+            <div class="guide-grid">
+                <div class="guide-card">
+                    <div class="step-number">1</div>
+                    <h3 class="guide-title">Copy Code</h3>
+                    <p class="guide-text">Click the copy button on any loadout or setting card</p>
+                </div>
+                <div class="guide-card">
+                    <div class="step-number">2</div>
+                    <h3 class="guide-title">Open Game</h3>
+                    <p class="guide-text">Launch CODM and go to loadout or settings menu</p>
+                </div>
+                <div class="guide-card">
+                    <div class="step-number">3</div>
+                    <h3 class="guide-title">Import</h3>
+                    <p class="guide-text">Click Import button and paste the code</p>
+                </div>
+                <div class="guide-card">
+                    <div class="step-number">4</div>
+                    <h3 class="guide-title">Dominate</h3>
+                    <p class="guide-text">Equip and start destroying lobbies</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="toast" id="toast">
+        <span class="toast-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="toastMessage">Copied to clipboard!</span>
+    </div>
+    <footer class="footer">
+        <div class="footer-brand">TRESS</div>
+        <p>tress sg godz mapagmahal123</p>
+        <p style="margin-top: 0.5rem; font-size: 0.85rem; opacity: 0.6;">&copy; 2025 TRESS. All rights reserved.</p>
+    </footer>
+    <div class="dev-message">optimized for competitive play</div>
+    <script>
+        const weapons = [
+            { name: "Locus", type: "sniper", image: "https://i.imgur.com/SogqGOH.jpg", attach: "https://i.imgur.com/LrXzF8W.jpg", season: "Recent", description: "Bolt-action sniper", code: "Locus-2A4B5A8C9C" },
+            { name: "SO-14", type: "marksman", image: "https://i.imgur.com/0GfkXIz.jpg", attach: "https://i.imgur.com/Xr0ID1C.jpg", season: "Recent", description: "Semi-auto marksman rifle", code: "SO-14-1C2D4A8A9B" },
+            { name: "RAM-7", type: "ar", image: "https://i.imgur.com/Np8ytQ3.jpg", attach: "https://i.imgur.com/chn91Rm.jpg", season: "Recent", description: "Aggressive close-mid AR", code: "RAM-7-1A2C4C8A9C" },
+            { name: "Machine Pistol", type: "secondary", image: "https://i.imgur.com/8HI5Xqc.jpg", attach: "https://i.imgur.com/3i8X3KQ.jpg", season: "Recent", description: "Fast-firing secondary weapon", code: "Machine Pistol-1A2C4A8B9C" },
+            { name: "VMP", type: "smg", image: "https://i.imgur.com/62ZmZbz.jpg", attach: "https://i.imgur.com/j12LQov.jpg", season: "Recent", description: "High mobility, great for rushing", code: "VMP-2D4C5H8D9B" },
+            { name: "DLQ33", type: "sniper", image: "https://i.imgur.com/kv4p9BX.jpg", attach: "https://i.imgur.com/Y9CTXHI.jpg", season: "Recent", description: "Reliable bolt-action sniper", code: "DLQ33-1A2C4A8B9C" },
+            { name: "USS 9", type: "smg", image: "https://i.imgur.com/BtEZ01Q.jpg", attach: "https://i.imgur.com/blgccM9.jpg", season: "Recent", description: "Silent killer, great for flanking", code: "USS 9-1C2A445B8C" },
+            { name: "KRM-262", type: "shotgun", image: "https://i.imgur.com/IiS9oOZ.jpg", attach: "https://i.imgur.com/KXmIiMv.jpg", season: "Recent", description: "Powerful close-range shotgun", code: "KRM-262-1A2C4A8B9C" },
+            { name: "DP27", type: "lmg", image: "https://i.imgur.com/uAqQYek.jpg", attach: "https://i.imgur.com/KN4PxAH.jpg", season: "Recent", description: "High-rate classic LMG", code: "DP27-1D2C4D5E7E" },
+            { name: "QQ9", type: "smg", image: "https://i.imgur.com/Cd6mGvu.jpg", attach: "https://i.imgur.com/wnBCAOA.jpg", season: "Recent", description: "Fast-firing SMG, excellent for rush plays", code: "QQ9-1C2C4A8C9C", isNew: true },
+            { name: "HOLGER 26", type: "lmg", image: "https://i.imgur.com/8GH3zab.jpg", attach: "https://i.imgur.com/qYZnSQy.jpg", season: "Recent", description: "LMG with AR mobility", code: "Holger 26-1A2A445D9C" }
+        ];
+        let favorites = JSON.parse(localStorage.getItem('tyrant_favorites')) || [];
+        let currentFilter = 'all';
+        let currentAttachCode = '';
+        function initTheme() {
+            const savedTheme = localStorage.getItem('tyrant_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('tyrant_theme', next);
+            updateThemeIcon(next);
+            showToast(`${next.charAt(0).toUpperCase() + next.slice(1)} mode activated`);
+        }
+        function updateThemeIcon(theme) {
+            const btn = document.getElementById('themeToggle');
+            btn.innerHTML = theme === 'dark' ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+        }
+        function initPerformance() {
+            const savedPerf = localStorage.getItem('tyrant_performance');
+            if (savedPerf === 'true') {
+                document.body.classList.add('performance-mode');
+                document.getElementById('perfToggle').classList.add('active');
+            }
+        }
+        function togglePerformance() {
+            const body = document.body;
+            const btn = document.getElementById('perfToggle');
+            const isPerf = body.classList.toggle('performance-mode');
+           
+            if (isPerf) {
+                btn.classList.add('active');
+                localStorage.setItem('tyrant_performance', 'true');
+                showToast('Performance mode ON - Effects disabled');
+            } else {
+                btn.classList.remove('active');
+                localStorage.removeItem('tyrant_performance');
+                showToast('Performance mode OFF - Effects enabled');
+            }
+        }
+        let basicSlideIndex = 0;
+        const BASIC_SLIDE_COUNT = 10;
+
+        function updateBasicSlide() {
+            const track = document.getElementById('basicSlidesTrack');
+            if (!track) return;
+            track.style.transform = `translate3d(-${basicSlideIndex * 100}%, 0, 0)`;
+            const counter = document.getElementById('basicSlideCounter');
+            if (counter) counter.textContent = `Slide ${basicSlideIndex + 1} of ${BASIC_SLIDE_COUNT}`;
+            const prev = document.getElementById('basicPrev');
+            const next = document.getElementById('basicNext');
+            if (prev) prev.disabled = basicSlideIndex === 0;
+            if (next) next.disabled = basicSlideIndex === BASIC_SLIDE_COUNT - 1;
+            document.querySelectorAll('.basic-dot').forEach((dot, i) => dot.classList.toggle('active', i === basicSlideIndex));
+        }
+        function goToBasicSlide(index) {
+            basicSlideIndex = Math.max(0, Math.min(BASIC_SLIDE_COUNT - 1, index));
+            updateBasicSlide();
+        }
+        function changeBasicSlide(direction) {
+            goToBasicSlide(basicSlideIndex + direction);
+        }
+        function openBasicSettings() {
+            basicSlideIndex = 0;
+            document.getElementById('basicSettingsModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(updateBasicSlide);
+        }
+        function closeBasicSettings() {
+            document.getElementById('basicSettingsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        let basicTouchStartX = 0;
+        let basicTouchStartY = 0;
+        document.addEventListener('DOMContentLoaded', () => {
+            const viewport = document.getElementById('basicSlidesViewport');
+            if (viewport) {
+                viewport.addEventListener('touchstart', (e) => {
+                    const t = e.changedTouches[0];
+                    basicTouchStartX = t.clientX;
+                    basicTouchStartY = t.clientY;
+                }, { passive: true });
+                viewport.addEventListener('touchend', (e) => {
+                    const t = e.changedTouches[0];
+                    const dx = t.clientX - basicTouchStartX;
+                    const dy = t.clientY - basicTouchStartY;
+                    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) {
+                        changeBasicSlide(dx < 0 ? 1 : -1);
+                    }
+                }, { passive: true });
+            }
+        });
+
+        function openQR() {
+            document.getElementById('qrModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeQR(e) {
+            if (!e || e.target.id === 'qrModal' || e.target.closest('.qr-close')) {
+                document.getElementById('qrModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+        function showGunModal(attachSrc, name, code) {
+            document.getElementById('modalGunImg').src = attachSrc;
+            document.getElementById('modalGunName').textContent = name + " (Attachments)";
+            document.getElementById('modalAttachCode').textContent = code;
+            currentAttachCode = code;
+            document.getElementById('gunModal').classList.add('active');
+        }
+        function closeGunModal() {
+            document.getElementById('gunModal').classList.remove('active');
+        }
+        function copyAttachCode() {
+            navigator.clipboard.writeText(currentAttachCode).then(() => {
+                showToast('Attachment code copied!');
+            });
+        }
+        function selectFOV(card, fovValue) {
+            document.querySelectorAll('.fov-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            showToast(`FOV ${fovValue} selected - Set in game settings!`);
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeBasicSettings();
+                closeQR();
+                closeGunModal();
+            }
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            initPerformance();
+            updateStats();
+            renderWeapons(weapons);
+           
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                searchWeapons(e.target.value);
+            });
+        });
+        function updateStats() {
+            document.getElementById('totalGuns').textContent = weapons.length;
+            document.getElementById('favoritesCount').textContent = favorites.length;
+        }
+        function renderWeapons(weaponsToRender) {
+            const grid = document.getElementById('weaponsGrid');
+            grid.innerHTML = '';
+           
+            weaponsToRender.forEach((weapon, index) => {
+                const card = document.createElement('div');
+                card.className = 'weapon-card';
+                card.style.animationDelay = `${index * 0.05}s`;
+               
+                const isFav = favorites.includes(weapon.name);
+                const newBadge = weapon.isNew ? '<span class="badge badge-new"><i class="fas fa-bolt"></i> NEW</span>' : '';
+               
+                const typeIcons = {
+                    'ar': 'fa-rifle',
+                    'smg': 'fa-wind',
+                    'lmg': 'fa-grip-vertical',
+                    'marksman': 'fa-crosshairs',
+                    'sniper': 'fa-crosshairs'
+                };
+               
+                const typeIcon = typeIcons[weapon.type] || 'fa-crosshairs';
+               
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="badges">
+                            ${newBadge}
+                            <span class="badge badge-season"><i class="fas fa-trophy"></i> ${weapon.season}</span>
+                        </div>
+                        <div class="card-actions-top">
+                            <button class="action-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${weapon.name}', this); event.stopImmediatePropagation()" title="Favorite">
+                                <i class="${isFav ? 'fas' : 'far'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <img src="${weapon.image}" alt="${weapon.name}" class="weapon-img" loading="lazy" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 250%22><rect fill=%22%23141414%22 width=%22400%22 height=%22250%22/><text fill=%22%23ff3e3e%22 x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2220%22>${weapon.name}</text></svg>'">
+                    </div>
+                    <div class="card-body">
+                        <div class="weapon-type"><i class="fas ${typeIcon}"></i> ${weapon.type.toUpperCase()}</div>
+                        <h3 class="weapon-name">${weapon.name}</h3>
+                        <p class="weapon-desc">${weapon.description}</p>
+                    </div>
+                `;
+                card.onclick = () => showGunModal(weapon.attach, weapon.name, weapon.code);
+                grid.appendChild(card);
+            });
+        }
+        function filterWeapons(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+           
+            let filtered = type === 'all' ? weapons : weapons.filter(w => w.type === type);
+            renderWeapons(filtered);
+            showToast(`${filtered.length} weapons found`);
+        }
+        function searchWeapons(query) {
+            const filtered = weapons.filter(w =>
+                w.name.toLowerCase().includes(query.toLowerCase()) ||
+                w.type.toLowerCase().includes(query.toLowerCase())
+            );
+            renderWeapons(filtered);
+        }
+        function toggleFavorite(name, btn) {
+            if (favorites.includes(name)) {
+                favorites = favorites.filter(f => f !== name);
+                btn.innerHTML = '<i class="far fa-heart"></i>';
+                btn.classList.remove('active');
+                showToast('Removed from favorites');
+            } else {
+                favorites.push(name);
+                btn.innerHTML = '<i class="fas fa-heart"></i>';
+                btn.classList.add('active');
+                showToast('Added to favorites');
+            }
+            localStorage.setItem('tyrant_favorites', JSON.stringify(favorites));
+            updateStats();
+        }
+        function copySetting(type) {
+            const code = type === 'sensi' ? document.getElementById('sensiCode').textContent : document.getElementById('hudCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast(`${type === 'sensi' ? 'Sensitivity' : 'HUD'} code copied!`);
+            });
+            if (navigator.vibrate) navigator.vibrate(50);
+        }
+        function shareSetting(name) {
+            const text = `Check out this ${name} by TRESS!`;
+            if (navigator.share) {
+                navigator.share({ title: 'TRESS', text: text, url: window.location.href });
+            } else {
+                navigator.clipboard.writeText(text + ' ' + window.location.href);
+                showToast('Share text copied!');
+            }
+        }
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+    </script>
+
+<!-- TRESS floating video preview -->
+<div class="tress-video-float" id="tressVideoFloat">
+  <div class="tress-video-head">
+    <span><i class="fas fa-play"></i> TRESS FEATURED</span>
+    <button type="button" class="tress-video-close" onclick="closeTressVideo()" aria-label="Close video">&times;</button>
+  </div>
+  <video id="tressPreviewVideo"
+         class="tress-video-player"
+         src="./tress_preview.mp4"
+         playsinline
+         autoplay
+         muted
+         loop
+         controlslist="nodownload noplaybackrate"
+         preload="metadata"></video>
+  <div class="tress-volume-row">
+          <i class="fas fa-volume-low"></i>
+          <input id="tressVolume" type="range" min="0" max="1" step="0.01" value="0.65" aria-label="Video volume">
+          <i class="fas fa-volume-high"></i>
+        </div>
+        <div class="tress-video-actions">
+    <button type="button" class="tress-video-sound" onclick="toggleTressSound()">
+      <i class="fas fa-volume-mute"></i><span>Tap for sound</span>
+    </button>
+    <a class="tress-video-open"
+       href="https://www.tiktok.com/@codm.xztress/video/7589622280653671701?lang=en"
+       target="_blank" rel="noopener noreferrer">
+      Open post <i class="fas fa-arrow-up-right-from-square"></i>
+    </a>
+  </div>
+</div>
+<script>
+(function () {
+  const v = document.getElementById('tressPreviewVideo');
+  const soundBtn = document.querySelector('.tress-video-sound');
+  if (!v) return;
+
+  v.addEventListener('click', function () {
+    v.muted = !v.muted;
+    if (!v.muted) v.play().catch(()=>{});
+    updateSound();
+  });
+
+  function updateSound() {
+    if (!soundBtn) return;
+    soundBtn.innerHTML = v.muted
+      ? '<i class="fas fa-volume-mute"></i><span>Tap for sound</span>'
+      : '<i class="fas fa-volume-high"></i><span>Sound on</span>';
+  }
+
+  window.toggleTressSound = function () {
+    v.muted = !v.muted;
+    if (!v.muted) v.play().catch(()=>{});
+    updateSound();
+  };
+
+  window.closeTressVideo = function () {
+    document.getElementById('tressVideoFloat')?.classList.add('hidden');
+    v.pause();
+  };
+})();
+</script>
+<style>
+.tress-video-float{
+  position:fixed; right:18px; bottom:18px; z-index:9999;
+  width:min(290px,calc(100vw - 28px));
+  padding:8px; border:1px solid rgba(184,76,255,.48);
+  border-radius:18px; background:rgba(16,9,26,.88);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  box-shadow:0 16px 45px rgba(0,0,0,.45),0 0 28px rgba(184,76,255,.16);
+  animation:tressFloatIn .5s ease both;
+}
+.tress-video-float.hidden{display:none}
+.tress-video-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:3px 4px 7px; color:var(--text,#fff);
+  font-size:.68rem; font-weight:800; letter-spacing:.08em;
+}
+.tress-video-head span{color:var(--primary,#b84cff)}
+.tress-video-close{
+  width:25px;height:25px;border:0;border-radius:50%;
+  color:#fff;background:rgba(255,255,255,.08);cursor:pointer;
+  font-size:17px;line-height:1;
+}
+.tress-video-player{
+  display:block;width:100%;aspect-ratio:16/9;object-fit:cover;
+  border-radius:12px;background:#000;cursor:pointer;
+}
+.tress-video-actions{display:flex;gap:7px;margin-top:7px}
+.tress-video-actions button,.tress-video-open{
+  flex:1;min-width:0;border:1px solid rgba(184,76,255,.28);
+  border-radius:10px;padding:8px 7px;background:rgba(184,76,255,.08);
+  color:#fff;text-decoration:none;font-size:.68rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  cursor:pointer;white-space:nowrap;
+}
+.tress-video-actions button:hover,.tress-video-open:hover{
+  background:rgba(184,76,255,.18);border-color:var(--primary,#b84cff)
+}
+@keyframes tressFloatIn{
+  from{opacity:0;transform:translateY(14px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+@media (max-width:600px){
+  .tress-video-float{
+    right:10px;bottom:10px;width:min(230px,calc(100vw - 20px));
+    border-radius:15px;padding:6px;
+  }
+  .tress-video-head{font-size:.58rem;padding:2px 3px 5px}
+  .tress-video-close{width:22px;height:22px;font-size:15px}
+  .tress-video-actions{gap:5px;margin-top:5px}
+  .tress-video-actions button,.tress-video-open{
+    padding:7px 5px;font-size:.58rem;border-radius:8px
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .tress-video-float{animation:none}
+}
+</style>
+
+
+<style>
+/* Final responsive polish */
+.settings-section{width:100%;}
+.settings-grid{align-items:stretch;}
+.settings-card{min-width:0;overflow:hidden;}
+.settings-content{min-width:0;}
+.big-code{overflow-wrap:anywhere;word-break:break-word;}
+.settings-actions{flex-wrap:wrap;}
+.settings-actions .btn{min-width:0;flex:1 1 140px;}
+@media (max-width: 768px){
+  .settings-grid{grid-template-columns:1fr!important;gap:14px!important;}
+  .settings-card{border-radius:16px!important;}
+  .settings-content{padding:15px!important;}
+  .settings-header{gap:8px!important;}
+  .settings-title{font-size:1.05rem!important;}
+  .settings-subtitle{font-size:.72rem!important;}
+  .big-code-box{padding:11px!important;}
+  .big-code{font-size:.78rem!important;line-height:1.45!important;}
+  .settings-features{gap:6px!important;}
+  .feature-tag{font-size:.62rem!important;padding:5px 7px!important;}
+  .basic-settings-card{width:100%;}
+}
+@media (max-width:480px){
+  .settings-actions{gap:7px!important;}
+  .settings-actions .btn{flex:1 1 100%;padding:9px 10px!important;}
+  .tress-video-float{width:min(210px,calc(100vw - 18px))!important;right:9px!important;bottom:9px!important;}
+  .tress-video-player{aspect-ratio:16/9;}
+}
+</style>
+<script>
+(function(){
+  const v=document.getElementById('tressPreviewVideo');
+  if(!v)return;
+  const tryPlay=()=>v.play().catch(()=>{});
+  v.muted=true;
+  v.autoplay=true;
+  tryPlay();
+  document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tryPlay(); });
+  window.addEventListener('pageshow',tryPlay);
+})();
+</script>
+
+<style id="tress-video-final-polish">
+@media (max-width: 600px){
+  .tress-video-float{
+    width: min(190px, calc(100vw - 24px)) !important;
+    right: 12px !important;
+    bottom: 12px !important;
+    padding: 5px !important;
+    border-radius: 13px !important;
+  }
+  .tress-video-head{
+    font-size: .54rem !important;
+    padding: 2px 3px 4px !important;
+  }
+  .tress-video-close{
+    width: 22px !important;
+    height: 22px !important;
+    font-size: 15px !important;
+  }
+  .tress-video-actions button,
+  .tress-video-open{
+    padding: 6px 4px !important;
+    font-size: .55rem !important;
+  }
+}
+.tress-video-close{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  cursor:pointer !important;
+  transition:transform .15s ease, background .15s ease !important;
+}
+.tress-video-close:hover{
+  transform:scale(1.06);
+  background:rgba(184,76,255,.22) !important;
+}
+</style>
+
+
+<style id="tress-volume-style">
+.tress-volume-row{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 5px 5px;color:var(--text-muted,#9d8aaa);
+  font-size:.62rem;
+}
+.tress-volume-row input{flex:1;accent-color:var(--primary,#b84cff);height:3px}
+@media(max-width:600px){
+  .tress-volume-row{padding:2px 3px 4px;font-size:.52rem;gap:4px}
+}
+</style>
+<script>
+(function(){
+  const v=document.getElementById('tressPreviewVideo');
+  const slider=document.getElementById('tressVolume');
+  if(v && slider){
+    v.volume=0.65;
+    slider.addEventListener('input',()=>{v.volume=Number(slider.value);});
+  }
+})();
+</script>
+
+</body>
+</html>
